@@ -1,21 +1,79 @@
 [project]
-name = "docs"
-description = ""
-authors = []
-telemetry = true
-cache_dir = "./.cache"
+name = "remote-mood-board"
+description = "A decentralized mood tracking application on Stacks blockchain"
+version = "2.0.0"
+authors = ["midorichie"]
+keywords = ["mood", "tracking", "stacks", "blockchain", "wellness"]
+readme = "README.md"
+homepage = "https://github.com/midorichie/remote-mood-board"
+repository = "https://github.com/midorichie/remote-mood-board"
+license = "MIT"
 
-# [contracts.counter]
-# path = "contracts/counter.clar"
+[contracts.mood-board]
+path = "contracts/mood-board.clar"
+depends_on = []
+
+[contracts.mood-analytics]
+path = "contracts/mood-analytics.clar"
+depends_on = ["mood-board"]
+
+[repl]
+costs_version = 3
+parser_version = 2
 
 [repl.analysis]
 passes = ["check_checker"]
-check_checker = { trusted_sender = false, trusted_caller = false, callee_filter = false }
 
-# Check-checker settings:
-# trusted_sender: if true, inputs are trusted after tx_sender has been checked.
-# trusted_caller: if true, inputs are trusted after contract-caller has been checked.
-# callee_filter: if true, untrusted data may be passed into a private function without a
-# warning, if it gets checked inside. This check will also propagate up to the
-# caller.
-# More informations: https://www.hiro.so/blog/new-safety-checks-in-clarinet
+[repl.analysis.check_checker]
+strict = false
+trusted_sender = false
+trusted_caller = false
+callee_filter = false
+
+[project.requirements]
+clarinet = ">=2.0.0"
+
+# Development network configuration
+[devnet]
+stx_address = "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM"
+btc_address = "mqVnk6NPRdhntvfm4hh9vvjiRkFDUuSYsH"
+port = 20443
+
+# Test configuration
+[testing]
+test_timeout = 300000
+
+# Deployment settings
+[deployments.devnet]
+stx_address = "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM"
+btc_address = "mqVnk6NPRdhntvfm4hh9vvjiRkFDUuSYsH"
+
+[deployments.testnet]
+stx_address = "ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG"
+btc_address = "muYdXKmX9bByAueDe6KFfHd5Ff1gdN9ErG"
+
+[deployments.mainnet]
+stx_address = "SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE"
+btc_address = "bc1qj89046x7zv6pm4n00qgqp505nvljnqp6y9v4j1"
+
+# Boot contracts (Stacks system contracts)
+[[devnet.boot_contracts]]
+contract_id = "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.pox-4"
+path = "boot_contracts/pox-4.clar"
+
+# Project metadata
+[project.metadata]
+category = "DeFi"
+subcategory = "Social"
+tags = ["mood-tracking", "wellness", "social", "analytics"]
+documentation = "docs/"
+changelog = "CHANGELOG.md"
+
+# Additional settings for Phase 2
+[contracts.mood-board.clarinet_version]
+epoch = "3.0"
+clarity_version = "3"
+
+[contracts.mood-analytics.clarinet_version]
+epoch = "3.0"
+clarity_version = "3"
